@@ -17,10 +17,6 @@ const getById = async (req, res) => {
 };
 
 const add = async (req, res) => {
-    const {err} = addSchema.validate(req.body);
-    if (err) {
-      throw HttpError(400, "Missing required name field");
-    } 
     const result = await Contact.create(req.body);
     res.status(201).json(result);
  }
