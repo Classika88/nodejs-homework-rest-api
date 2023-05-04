@@ -22,9 +22,11 @@ const register = async (req, res) => {
   const hashPassword = await bcryptjs.hash(password, 10);
   const avatarURL = gravatar.url(email);
   const verificationCode = nanoid();
+
   const newUser = await User.create({ ...req.body, password: hashPassword, avatarURL, verificationCode});
   const verifyEmail = {
-    to: email,subject: "Verify email address",
+    to: email,
+    subject: "Verify email address",
     html: `<a target="_blank" href="${BASE_URL}/api/auth/verify/${verificationCode}">Click here to verify your email address</a>`
   };
   await sendEmail(verifyEmail);
@@ -53,8 +55,10 @@ if (!user) {
   throw HttpError(401, "Email not found");}
   if(user.verify) {
     throw HttpError(401, "Email already verified");}
+
     const verifyEmail = {
-      to: email,subject: "Verify email address",
+      to: email,
+      subject: "Verify email address",
       html: `<a target="_blank" href="${BASE_URL}/api/auth/verify/${user.verificationCode}">Click here to verify your email address</a>`
     };
     await sendEmail(verifyEmail);
@@ -121,4 +125,4 @@ module.exports = {
   getCurrent: ctrlWrapper(getCurrent),
   logout: ctrlWrapper(logout),
   updateAvatar: ctrlWrapper(updateAvatar),
-};
+}
